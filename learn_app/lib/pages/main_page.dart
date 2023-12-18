@@ -45,7 +45,9 @@ class _MainPageState extends State<MainPage> {
                         Navigator.pop(context);
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return const Profile(email: "email@email.com");
+                          return const Profile(
+                              email: "email@email.com",
+                              birthDate: "01-01-2001");
                         }));
                       },
                       child: Container(
