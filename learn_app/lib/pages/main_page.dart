@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:learn_app/pages/main_page_1.dart';
+import 'package:learn_app/pages/card_page.dart';
 import 'package:learn_app/pages/main_page_2.dart';
 import 'package:learn_app/pages/main_page_3.dart';
 import 'package:learn_app/pages/profile.dart';
+import 'package:learn_app/widgets/custom_drawer.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -20,64 +21,7 @@ class _MainPageState extends State<MainPage> {
       appBar: AppBar(
         title: const Text("Main Page"),
       ),
-      drawer: Drawer(
-        child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
-            child: SafeArea(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: const Text("Home"),
-                      ),
-                    ),
-                    const Divider(),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const Profile(
-                              email: "email@email.com",
-                              birthDate: "01-01-2001");
-                        }));
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: const Text("Profile"),
-                      ),
-                    ),
-                    const Divider(),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: const Text("Settings"),
-                      ),
-                    ),
-                    const Divider(),
-                    Expanded(child: Container()),
-                    const Text("Logout"),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    const Text("Terms of Service"),
-                  ]),
-            )),
-      ),
+      drawer: const CustomDrawer(),
       body: Column(
         children: [
           Expanded(
@@ -88,7 +32,7 @@ class _MainPageState extends State<MainPage> {
                   currentIndex = index;
                 });
               },
-              children: const [MainPage1(), MainPage2(), MainPage3()],
+              children: const [CardPage(), MainPage2(), MainPage3()],
             ),
           ),
           BottomNavigationBar(
