@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:learn_app/pages/card_page.dart';
-import 'package:learn_app/pages/main_page_2.dart';
-import 'package:learn_app/pages/main_page_3.dart';
-import 'package:learn_app/pages/profile.dart';
+import 'package:learn_app/pages/list_view_horizontal.dart';
+import 'package:learn_app/pages/list_view_vertical.dart';
+import 'package:learn_app/pages/task_page.dart';
 import 'package:learn_app/widgets/custom_drawer.dart';
 
 class MainPage extends StatefulWidget {
@@ -32,11 +32,17 @@ class _MainPageState extends State<MainPage> {
                   currentIndex = index;
                 });
               },
-              children: const [CardPage(), MainPage2(), MainPage3()],
+              children: const [
+                CardPage(),
+                ListViewHorizontal(),
+                ListViewVertical(),
+                TaskPage()
+              ],
             ),
           ),
           BottomNavigationBar(
               currentIndex: currentIndex,
+              type: BottomNavigationBarType.fixed,
               onTap: (value) => setState(() => {
                     currentIndex = value,
                     pageController.animateToPage(value,
@@ -51,6 +57,8 @@ class _MainPageState extends State<MainPage> {
                     label: "Favorite"),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.person_outline), label: "Profile"),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.list_alt), label: "Settings"),
               ])
         ],
       ),
