@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:learn_app/pages/login_page.dart';
 import 'package:learn_app/pages/profile.dart';
+import 'package:learn_app/pages/random_numbers.dart';
+import 'package:learn_app/pages/settings_page.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -84,8 +86,7 @@ class CustomDrawer extends StatelessWidget {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const Profile(
-                        email: "email@email.com", birthDate: "01-01-2001");
+                    return const Profile();
                   }));
                 },
                 child: Container(
@@ -106,6 +107,9 @@ class CustomDrawer extends StatelessWidget {
               InkWell(
                 onTap: () {
                   Navigator.pop(context);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const SettingsPage();
+                  }));
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 8),
@@ -114,6 +118,28 @@ class CustomDrawer extends StatelessWidget {
                       Icon(Icons.settings_outlined),
                       SizedBox(width: 8),
                       Text("Settings"),
+                    ],
+                  ),
+                ),
+              ),
+              const Divider(),
+              const SizedBox(
+                height: 16,
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const RandomNumbers();
+                  }));
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.numbers_outlined),
+                      SizedBox(width: 8),
+                      Text("Random Numbers"),
                     ],
                   ),
                 ),

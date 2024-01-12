@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:learn_app/repositories/languages_repository.dart';
 import 'package:learn_app/repositories/level_repository.dart';
+import 'package:learn_app/services/app_storage_service.dart';
 import 'package:learn_app/widgets/section_divider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
-  final String email;
-  final String birthDate;
-
-  const Profile({super.key, required this.email, required this.birthDate});
+  const Profile({super.key});
 
   @override
   State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
+  AppStorageService storage = AppStorageService();
+
   TextEditingController emailController = TextEditingController(text: "");
   TextEditingController birthDateController = TextEditingController(text: "");
   DateTime? birthDate;
@@ -22,7 +23,7 @@ class _ProfileState extends State<Profile> {
   var powers = [];
   var levels = [];
   var selectedLevel = "";
-  var selectedPowers = [];
+  var selectedPowers = [""];
   var hoursPerWeek = 20.0;
   var yearsOfExperience = 0;
   bool loading = false;
@@ -32,6 +33,18 @@ class _ProfileState extends State<Profile> {
     levels = levelRepository.getLevels();
     powers = powersRepository.getPowers();
     super.initState();
+    loadSettings();
+  }
+
+  void loadSettings() async {
+    selectedLevel = await storage.selectedLevel;
+    selectedPowers = await storage.selectedPowers;
+    hoursPerWeek = await storage.hoursPerWeek;
+    yearsOfExperience = await storage.yearsOfExperience;
+    emailController.text = await storage.email;
+    birthDateController.text = await storage.birthDateText;
+    birthDate = await storage.birthDate;
+    setState(() {});
   }
 
   List<DropdownMenuItem<int>> renderExperienceYearsList(int max) {
@@ -45,9 +58,19 @@ class _ProfileState extends State<Profile> {
     return list;
   }
 
-  void onFinishEditing() {
+  void onSaveSuccess() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Profile updated"),
+        backgroundColor: Colors.green,
+      ),
+    );
+    Navigator.pop(context);
+  }
+
+  void onFinishEditing() async {
     String email = emailController.text;
-    String birthDate = birthDateController.text;
+    String date = birthDateController.text;
 
     if (email.trim().length <= 3) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -56,7 +79,7 @@ class _ProfileState extends State<Profile> {
           backgroundColor: Colors.red,
         ),
       );
-    } else if (birthDate.isEmpty) {
+    } else if (date.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Birth date cannot be empty"),
@@ -81,26 +104,22 @@ class _ProfileState extends State<Profile> {
       setState(() {
         loading = true;
       });
-      Future.delayed(const Duration(seconds: 2), () {
-        setState(() {
-          loading = false;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Profile updated"),
-            backgroundColor: Colors.green,
-          ),
-        );
-        Navigator.pop(context);
+      await storage.setEmail(email);
+      await storage.setBirthDate(date);
+      await storage.setSelectedLevel(selectedLevel);
+      await storage.setSelectedPowers(selectedPowers);
+      await storage.setHoursPerWeek(hoursPerWeek);
+      await storage.setYearsOfExperience(yearsOfExperience);
+
+      setState(() {
+        loading = false;
       });
+      onSaveSuccess();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    emailController.text = widget.email;
-    birthDateController.text = widget.birthDate;
-
     return Scaffold(
         appBar: AppBar(
           title: const Text("Profile"),
@@ -137,14 +156,15 @@ class _ProfileState extends State<Profile> {
                       onTap: () async {
                         var data = await showDatePicker(
                           context: context,
-                          initialDate: DateTime.now(),
+                          initialDate: birthDate ?? DateTime.now(),
                           firstDate: DateTime(1900),
                           lastDate: DateTime.now(),
                         );
                         if (data != null) {
-                          birthDateController.text =
-                              "${data.day}-${data.month}-${data.year}";
-                          birthDate = data;
+                          birthDateController.text = data.toString();
+                          setState(() {
+                            birthDate = data;
+                          });
                         }
                       },
                       controller: birthDateController,
