@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:learn_app/services/app_storage_service.dart';
+import 'package:hive/hive.dart';
 
 class RandomNumbers extends StatefulWidget {
   const RandomNumbers({super.key});
@@ -11,14 +11,19 @@ class RandomNumbers extends StatefulWidget {
 }
 
 class _RandomNumbersState extends State<RandomNumbers> {
-  AppStorageService storage = AppStorageService();
+  late Box boxRandomNumbers;
 
   int randomNumber = 0;
   int clickCount = 0;
 
   loadData() async {
-    randomNumber = await storage.randomNumber;
-    clickCount = await storage.clickCount;
+    if (!Hive.isBoxOpen('app_storage')) {
+      boxRandomNumbers = await Hive.openBox('app_storage');
+    } else {
+      boxRandomNumbers = Hive.box('app_storage');
+    }
+    randomNumber = boxRandomNumbers.get('randomNumber', defaultValue: 0);
+    clickCount = boxRandomNumbers.get('clickCount', defaultValue: 0);
     setState(() {});
   }
 
@@ -38,8 +43,8 @@ class _RandomNumbersState extends State<RandomNumbers> {
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             var random = Random().nextInt(1000);
-            await storage.setRandomNumber(random);
-            await storage.setClickCount(clickCount + 1);
+            await boxRandomNumbers.put('randomNumber', random);
+            await boxRandomNumbers.put('clickCount', clickCount + 1);
             await loadData();
           },
           child: const Icon(Icons.shuffle),

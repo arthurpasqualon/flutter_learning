@@ -1,44 +1,45 @@
-import 'package:learn_app/model/task.dart';
+import 'package:hive/hive.dart';
+import 'package:learn_app/model/task_model.dart';
 
 class TaskRepository {
-  final List<Task> _tasks = [];
+  final List<TaskModel> _tasks = [];
+  static late Box _box;
 
-  List<Task> get tasks => _tasks;
+  // ignore: constant_identifier_names
+  static const TASK_KEY = 'tasks';
 
-  Future<void> addTask(Task task) async {
-    await Future.delayed(const Duration(seconds: 1));
-    _tasks.add(task);
+  List<TaskModel> get tasks => _tasks;
+
+  TaskRepository._create();
+
+  static Future<TaskRepository> load() async {
+    if (Hive.isBoxOpen(TASK_KEY)) {
+      _box = Hive.box(TASK_KEY);
+    } else {
+      _box = await Hive.openBox(TASK_KEY);
+    }
+    return TaskRepository._create();
   }
 
-  Future<void> removeTask(Task task) async {
-    await Future.delayed(const Duration(seconds: 1));
-    _tasks.remove(task);
+  List<TaskModel> fetchTasks(bool showOnlyPendingTasks) {
+    if (showOnlyPendingTasks) {
+      return _box.values
+          .cast<TaskModel>()
+          .where((task) => task.isDone == false)
+          .toList();
+    }
+    return _box.values.cast<TaskModel>().toList();
   }
 
-  void updateTask(Task task) async {
-    await Future.delayed(const Duration(seconds: 1));
-    final index = _tasks.indexWhere((t) => t.id == task.id);
-    _tasks[index] = task;
+  void addTask(TaskModel task) {
+    _box.add(task);
   }
 
-  Future<void> toggleTask(Task task) async {
-    await Future.delayed(const Duration(seconds: 1));
-    final index = _tasks.indexWhere((t) => t.id == task.id);
-    _tasks[index] = Task(task.description, !task.isDone);
+  void updateTask(TaskModel task) {
+    task.save();
   }
 
-  void clearTasks() async {
-    await Future.delayed(const Duration(seconds: 1));
-    _tasks.clear();
-  }
-
-  Future<List<Task>> fetchTasks() async {
-    await Future.delayed(const Duration(seconds: 1));
-    return _tasks;
-  }
-
-  Future<List<Task>> fetchPendingTasks() async {
-    await Future.delayed(const Duration(seconds: 1));
-    return _tasks.where((t) => !t.isDone).toList();
+  void deleteTask(TaskModel task) {
+    task.delete();
   }
 }

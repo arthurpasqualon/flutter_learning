@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learn_app/model/task.dart';
+import 'package:learn_app/model/task_model.dart';
 import 'package:learn_app/repositories/task_repository.dart';
 
 class TaskPage extends StatefulWidget {
@@ -10,9 +10,9 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
-  TaskRepository taskRepository = TaskRepository();
+  late TaskRepository taskRepository;
   TextEditingController taskNameController = TextEditingController();
-  List<Task> _tasks = <Task>[];
+  List<TaskModel> _tasks = <TaskModel>[];
   bool _showPendingTasks = false;
 
   @override
@@ -22,11 +22,8 @@ class _TaskPageState extends State<TaskPage> {
   }
 
   void loadTasks() async {
-    if (_showPendingTasks) {
-      _tasks = await taskRepository.fetchPendingTasks();
-    } else {
-      _tasks = await taskRepository.fetchTasks();
-    }
+    taskRepository = await TaskRepository.load();
+    _tasks = taskRepository.fetchTasks(_showPendingTasks);
     setState(() {});
   }
 
@@ -55,8 +52,9 @@ class _TaskPageState extends State<TaskPage> {
                       TextButton(
                         onPressed: () async => {
                           Navigator.pop(context),
-                          await taskRepository
-                              .addTask(Task(taskNameController.text, false)),
+                          taskRepository.addTask(
+                              TaskModel.create(taskNameController.text, false)),
+                          loadTasks(),
                           setState(() {}),
                         },
                         child: const Text("Add"),
@@ -96,20 +94,22 @@ class _TaskPageState extends State<TaskPage> {
             child: ListView.builder(
                 itemCount: _tasks.length,
                 itemBuilder: (BuildContext context, int index) {
+                  var task = _tasks[index];
                   return Dismissible(
-                    key: Key(_tasks[index].id.toString()),
+                    key: Key(task.id.toString()),
                     onDismissed: (direction) async {
-                      await taskRepository.removeTask(_tasks[index]);
+                      taskRepository.deleteTask(task);
                       loadTasks();
                     },
                     child: ListTile(
-                      title: Text(_tasks[index].description),
+                      title: Text(task.description),
                       trailing: Checkbox(
                         activeColor: Colors.black,
                         checkColor: Colors.white,
                         value: _tasks[index].isDone,
                         onChanged: (value) async {
-                          await taskRepository.toggleTask(_tasks[index]);
+                          task.isDone = value ?? false;
+                          taskRepository.updateTask(task);
                           loadTasks();
                         },
                       ),

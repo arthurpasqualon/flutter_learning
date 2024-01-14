@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:learn_app/model/profile_model.dart';
 import 'package:learn_app/repositories/languages_repository.dart';
 import 'package:learn_app/repositories/level_repository.dart';
-import 'package:learn_app/services/app_storage_service.dart';
+import 'package:learn_app/repositories/profile_repository.dart';
 import 'package:learn_app/widgets/section_divider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -13,8 +13,8 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  AppStorageService storage = AppStorageService();
-
+  late ProfileRepository profileRepository;
+  ProfileModel profile = ProfileModel.empty();
   TextEditingController emailController = TextEditingController(text: "");
   TextEditingController birthDateController = TextEditingController(text: "");
   DateTime? birthDate;
@@ -22,10 +22,6 @@ class _ProfileState extends State<Profile> {
   var powersRepository = PowersRepository();
   var powers = [];
   var levels = [];
-  var selectedLevel = "";
-  var selectedPowers = [""];
-  var hoursPerWeek = 20.0;
-  var yearsOfExperience = 0;
   bool loading = false;
 
   @override
@@ -37,13 +33,12 @@ class _ProfileState extends State<Profile> {
   }
 
   void loadSettings() async {
-    selectedLevel = await storage.selectedLevel;
-    selectedPowers = await storage.selectedPowers;
-    hoursPerWeek = await storage.hoursPerWeek;
-    yearsOfExperience = await storage.yearsOfExperience;
-    emailController.text = await storage.email;
-    birthDateController.text = await storage.birthDateText;
-    birthDate = await storage.birthDate;
+    profileRepository = await ProfileRepository.load();
+    profile = profileRepository.getData();
+    emailController.text = profile.email ?? "";
+    birthDateController.text =
+        profile.birthDate == null ? "" : profile.birthDate.toString();
+    birthDate = profile.birthDate;
     setState(() {});
   }
 
@@ -86,14 +81,15 @@ class _ProfileState extends State<Profile> {
           backgroundColor: Colors.red,
         ),
       );
-    } else if (selectedLevel.isEmpty) {
+    } else if (profile.selectedLevel == null ||
+        profile.selectedLevel?.trim() == "") {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Please select your experience level"),
           backgroundColor: Colors.red,
         ),
       );
-    } else if (selectedPowers.isEmpty) {
+    } else if (profile.selectedPowers.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Please select your powers"),
@@ -104,13 +100,9 @@ class _ProfileState extends State<Profile> {
       setState(() {
         loading = true;
       });
-      await storage.setEmail(email);
-      await storage.setBirthDate(date);
-      await storage.setSelectedLevel(selectedLevel);
-      await storage.setSelectedPowers(selectedPowers);
-      await storage.setHoursPerWeek(hoursPerWeek);
-      await storage.setYearsOfExperience(yearsOfExperience);
 
+      profile.email = email;
+      profileRepository.save(profile);
       setState(() {
         loading = false;
       });
@@ -175,11 +167,11 @@ class _ProfileState extends State<Profile> {
                         return RadioListTile(
                           value: level,
                           title: Text(level),
-                          groupValue: selectedLevel,
+                          groupValue: profile.selectedLevel,
                           activeColor: Colors.black,
                           onChanged: (value) {
                             setState(() {
-                              selectedLevel = value.toString();
+                              profile.selectedLevel = value.toString();
                             });
                           },
                         );
@@ -189,13 +181,13 @@ class _ProfileState extends State<Profile> {
                     Column(
                       children: powers.map((power) {
                         return CheckboxListTile(
-                          value: selectedPowers.contains(power),
+                          value: profile.selectedPowers.contains(power),
                           onChanged: (value) {
                             setState(() {
                               if (value == true) {
-                                selectedPowers.add(power);
+                                profile.selectedPowers.add(power);
                               } else {
-                                selectedPowers.remove(power);
+                                profile.selectedPowers.remove(power);
                               }
                             });
                           },
@@ -209,22 +201,25 @@ class _ProfileState extends State<Profile> {
                     Slider(
                         min: 0.0,
                         max: 168.0,
-                        value: hoursPerWeek,
+                        value: profile.hoursPerWeek ?? 0.0,
                         onChanged: (value) {
                           setState(() {
-                            hoursPerWeek = value;
+                            profile.hoursPerWeek = value;
                           });
                         }),
-                    Center(child: Text("${hoursPerWeek.toInt()} hours/week")),
+                    Center(
+                        child: Text(
+                            "${profile.hoursPerWeek?.toInt()} hours/week")),
                     const Section(
                         text: "How many years of experience do you have?"),
                     DropdownButton(
-                        value: yearsOfExperience.toInt(),
+                        value: profile.yearsOfExperience?.toInt() ?? 0,
                         isExpanded: true,
                         items: renderExperienceYearsList(20),
                         onChanged: (value) {
                           setState(() {
-                            yearsOfExperience = int.parse(value.toString());
+                            profile.yearsOfExperience =
+                                int.parse(value.toString());
                           });
                         }),
                     TextButton(
