@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:learn_app/model/imc_result_model.dart';
 import 'package:learn_app/model/profile_model.dart';
 import 'package:learn_app/model/task_model.dart';
 import 'package:learn_app/my_app.dart';
@@ -12,5 +13,6 @@ void main() async {
   Hive.init(docsDir.path);
   Hive.registerAdapter(ProfileModelAdapter());
   Hive.registerAdapter(TaskModelAdapter());
+  Hive.registerAdapter(ImcResultModelAdapter());
   runApp(const MyApp());
 }
