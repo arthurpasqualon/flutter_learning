@@ -1,5 +1,5 @@
 class CardDetailModel {
-  String id;
+  int id;
   String title;
   String description;
   String imageUrl;
