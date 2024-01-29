@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:learn_app/model/card_detail_model.dart';
 import 'package:learn_app/model/posts_model.dart';
 import 'package:learn_app/pages/post_detail.dart';

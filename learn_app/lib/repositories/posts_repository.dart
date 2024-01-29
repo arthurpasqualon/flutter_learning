@@ -1,28 +1,17 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:learn_app/model/posts_model.dart';
-import 'package:http/http.dart' as http;
+import 'package:learn_app/repositories/jsonplaceholder_dio.dart';
 
 class PostsRepository {
+  final dio = JsonPlaceholderDio();
   Future<List<PostsModel>> fetchPosts() async {
-    try {
-      final response = await http
-          .get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
+    var response = await dio.jsonPlaceholderDio.get('/posts');
 
-      if (response.statusCode == 200) {
-        final jsonResponse = await http
-            .get(Uri.parse('https://jsonplaceholder.typicode.com/posts'))
-            .then((response) => response.body);
-        final decodedJson = jsonDecode(jsonResponse);
-        return (decodedJson as List)
-            .map((post) => PostsModel.fromJson(post))
-            .toList();
-      }
-
-      return [];
-    } catch (e) {
-      throw Exception('Erro ao buscar Posts');
+    if (response.statusCode == 200) {
+      return (response.data as List)
+          .map((post) => PostsModel.fromJson(post))
+          .toList();
     }
+
+    return [];
   }
 }
