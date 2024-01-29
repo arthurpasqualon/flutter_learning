@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:learn_app/pages/characters_page.dart';
 import 'package:learn_app/pages/post_page.dart';
 import 'package:learn_app/pages/list_view_vertical.dart';
 import 'package:learn_app/pages/task_page.dart';
-import 'package:learn_app/pages/test_http_page.dart';
 import 'package:learn_app/widgets/custom_drawer.dart';
 
 class MainPage extends StatefulWidget {
@@ -33,7 +33,7 @@ class _MainPageState extends State<MainPage> {
                 });
               },
               children: const [
-                TestHttpPage(),
+                CharactersPage(),
                 PostPage(),
                 ListViewVertical(),
                 TaskPage()
@@ -51,7 +51,7 @@ class _MainPageState extends State<MainPage> {
                   }),
               items: const [
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.home_outlined), label: "Home"),
+                    icon: Icon(Icons.shield), label: "Heroes"),
                 BottomNavigationBarItem(icon: Icon(Icons.list), label: "Posts"),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.person_outline), label: "Profile"),
