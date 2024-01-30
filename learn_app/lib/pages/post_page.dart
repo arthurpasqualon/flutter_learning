@@ -76,7 +76,7 @@ class _PostPageState extends State<PostPage> {
                                       ),
                                       Expanded(
                                           child: Text(
-                                        post!.title,
+                                        post.title,
                                         style: const TextStyle(fontSize: 24),
                                         overflow: TextOverflow.ellipsis,
                                       )),
@@ -86,7 +86,7 @@ class _PostPageState extends State<PostPage> {
                                     height: 16,
                                   ),
                                   Text(
-                                    post!.body,
+                                    post.body,
                                     style: const TextStyle(fontSize: 16),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 3,

@@ -56,7 +56,7 @@ class _MainPageState extends State<MainPage> {
                 BottomNavigationBarItem(
                     icon: Icon(Icons.person_outline), label: "Profile"),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.list_alt), label: "Settings"),
+                    icon: Icon(Icons.list_alt), label: "Tasks"),
               ])
         ],
       ),

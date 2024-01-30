@@ -10,12 +10,31 @@ class CharactersPage extends StatefulWidget {
 }
 
 class _CharactersPageState extends State<CharactersPage> {
+  ScrollController scrollController = ScrollController();
   late CharactersRepository charactersRepository;
   CharactersModel? characters;
+  var offset = 0;
+  var loading = false;
 
   void loadCharacters() async {
-    characters = await charactersRepository.fetchCharacters();
-    setState(() {});
+    if (loading) {
+      return;
+    } else {
+      setState(() {
+        loading = true;
+      });
+    }
+    debugPrint("loadCharacters");
+    if (characters == null) {
+      characters = await charactersRepository.fetchCharacters(offset);
+    } else {
+      offset = offset + (characters?.data?.count ?? 0);
+      var newCharacters = await charactersRepository.fetchCharacters(offset);
+      characters?.data?.results?.addAll(newCharacters.data?.results ?? []);
+    }
+    setState(() {
+      loading = false;
+    });
   }
 
   @override
@@ -34,28 +53,46 @@ class _CharactersPageState extends State<CharactersPage> {
               height: double.infinity,
               width: double.infinity,
               child: Center(child: LinearProgressIndicator()))
-          : ListView.builder(
-              shrinkWrap: true,
-              itemCount: characters?.data?.results?.length ?? 0,
-              itemBuilder: (context, index) {
-                var character = characters?.data?.results?[index];
+          : Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: characters?.data?.results?.length ?? 0,
+                      controller: scrollController
+                        ..addListener(() {
+                          if (scrollController.position.pixels >
+                              scrollController.position.maxScrollExtent * 0.8) {
+                            loadCharacters();
+                          }
+                        }),
+                      itemBuilder: (context, index) {
+                        var character = characters?.data?.results?[index];
 
-                if (character == null) {
-                  return null;
-                }
-                return ListTile(
-                  leading: character.thumbnail != null
-                      ? Image.network(
-                          "${character.thumbnail?.path}.${character.thumbnail?.extension}",
-                          height: 72,
-                          width: 72,
-                        )
-                      : null,
-                  title: Text(character.name ?? ""),
-                  subtitle: Text(character.description ?? ""),
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                );
-              }),
+                        if (character == null) {
+                          return null;
+                        }
+                        return ListTile(
+                          leading: character.thumbnail != null
+                              ? Image.network(
+                                  "${character.thumbnail?.path}.${character.thumbnail?.extension}",
+                                  height: 72,
+                                  width: 72,
+                                )
+                              : null,
+                          title: Text(character.name ?? ""),
+                          subtitle: Text(character.description ?? ""),
+                          trailing: const Icon(Icons.arrow_forward_ios),
+                        );
+                      }),
+                ),
+                if (loading)
+                  const SizedBox(
+                    height: 24,
+                    width: 24,
+                    child: Center(child: CircularProgressIndicator()),
+                  )
+              ],
+            ),
     ));
   }
 }

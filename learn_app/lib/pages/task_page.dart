@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:learn_app/model/task_model.dart';
-import 'package:learn_app/repositories/task_repository.dart';
+import 'package:learn_app/model/tasks_model.dart';
+import 'package:learn_app/repositories/tasks/tasks_repository.dart';
 
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
@@ -10,10 +10,11 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
-  late TaskRepository taskRepository;
+  TasksRepository tasksRepository = TasksRepository();
   TextEditingController taskNameController = TextEditingController();
-  List<TaskModel> _tasks = <TaskModel>[];
+  TasksModel? _tasks;
   bool _showPendingTasks = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -22,9 +23,13 @@ class _TaskPageState extends State<TaskPage> {
   }
 
   void loadTasks() async {
-    taskRepository = await TaskRepository.load();
-    _tasks = taskRepository.fetchTasks(_showPendingTasks);
-    setState(() {});
+    setState(() {
+      _isLoading = true;
+    });
+    _tasks = await tasksRepository.get(_showPendingTasks);
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -52,8 +57,10 @@ class _TaskPageState extends State<TaskPage> {
                       TextButton(
                         onPressed: () async => {
                           Navigator.pop(context),
-                          taskRepository.addTask(
-                              TaskModel.create(taskNameController.text, false)),
+                          await tasksRepository.create((Task.create(
+                            taskNameController.text,
+                            false,
+                          ))),
                           loadTasks(),
                           setState(() {}),
                         },
@@ -84,38 +91,46 @@ class _TaskPageState extends State<TaskPage> {
                     onChanged: (value) {
                       _showPendingTasks = value;
                       loadTasks();
-
                       setState(() {});
                     }),
               ],
             ),
           ),
           Expanded(
-            child: ListView.builder(
-                itemCount: _tasks.length,
-                itemBuilder: (BuildContext context, int index) {
-                  var task = _tasks[index];
-                  return Dismissible(
-                    key: Key(task.id.toString()),
-                    onDismissed: (direction) async {
-                      taskRepository.deleteTask(task);
-                      loadTasks();
-                    },
-                    child: ListTile(
-                      title: Text(task.description),
-                      trailing: Checkbox(
-                        activeColor: Colors.black,
-                        checkColor: Colors.white,
-                        value: _tasks[index].isDone,
-                        onChanged: (value) async {
-                          task.isDone = value ?? false;
-                          taskRepository.updateTask(task);
+            child: _isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(
+                    color: Colors.black,
+                  ))
+                : ListView.builder(
+                    itemCount: _tasks?.results.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var task = _tasks?.results[index];
+
+                      if (task == null) {
+                        return null;
+                      }
+                      return Dismissible(
+                        key: Key(task.objectId.toString()),
+                        onDismissed: (direction) async {
+                          await tasksRepository.delete(task);
                           loadTasks();
                         },
-                      ),
-                    ),
-                  );
-                }),
+                        child: ListTile(
+                          title: Text(task.description),
+                          trailing: Checkbox(
+                            activeColor: Colors.black,
+                            checkColor: Colors.white,
+                            value: task.completed,
+                            onChanged: (value) async {
+                              task.completed = value ?? false;
+                              await tasksRepository.update(task);
+                              loadTasks();
+                            },
+                          ),
+                        ),
+                      );
+                    }),
           )
         ],
       ),
