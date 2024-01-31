@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learn_app/model/tasks_model.dart';
 import 'package:learn_app/repositories/tasks/tasks_repository.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
@@ -20,6 +21,15 @@ class _TaskPageState extends State<TaskPage> {
   void initState() {
     super.initState();
     loadTasks();
+  }
+
+  double getCompletedTasksPercentage() {
+    if (_tasks == null) {
+      return 0;
+    }
+    var completedTasks = _tasks?.results.where((element) => element.completed);
+    return ((completedTasks?.length ?? 0.0) * 100.0 / _tasks!.results.length) /
+        100.0;
   }
 
   void loadTasks() async {
@@ -94,6 +104,16 @@ class _TaskPageState extends State<TaskPage> {
                       setState(() {});
                     }),
               ],
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.all(8),
+            child: LinearPercentIndicator(
+              lineHeight: 14.0,
+              percent: getCompletedTasksPercentage(),
+              backgroundColor: Colors.grey,
+              progressColor: Colors.black,
             ),
           ),
           Expanded(

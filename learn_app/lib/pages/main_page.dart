@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:learn_app/pages/characters_page.dart';
 import 'package:learn_app/pages/post_page.dart';
 import 'package:learn_app/pages/list_view_vertical.dart';
@@ -51,7 +52,7 @@ class _MainPageState extends State<MainPage> {
                   }),
               items: const [
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.shield), label: "Heroes"),
+                    icon: FaIcon(FontAwesomeIcons.mask), label: "Heroes"),
                 BottomNavigationBarItem(icon: Icon(Icons.list), label: "Posts"),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.person_outline), label: "Profile"),

@@ -44,6 +44,29 @@ dependencies:
   crypto: ^3.0.3
   convert: ^3.1.1
   flutter_dotenv: ^5.1.0
+  flutter_launcher_icons: ^0.13.1
+  font_awesome_flutter: ^10.7.0
+  percent_indicator: ^4.2.3
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "lib/images/logo.png"
+  adaptive_icon_background: "#ffffff" 
+  background_color_ios: "#ffffff"
+  web:
+    generate: true
+    image_path: "lib/images/logo.png"
+    background_color: "#ffffff"
+    theme_color: "#000000"
+  windows:
+    generate: true
+    image_path: "lib/images/logo.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "lib/images/logo.png"
 
 dev_dependencies:
   flutter_test:

@@ -61,8 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                         flex: 2,
                         child: Image(
                           height: 125,
-                          image: NetworkImage(
-                              "https://www.freepnglogos.com/uploads/captain-america-logo-12.png"),
+                          image: AssetImage("lib/images/logo.png"),
                         ),
                       ),
                       Expanded(child: Container())
