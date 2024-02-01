@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learn_app/pages/auto_size_text.dart';
 import 'package:learn_app/pages/imc_calc_page.dart';
 import 'package:learn_app/pages/login_page.dart';
 import 'package:learn_app/pages/profile.dart';
@@ -168,6 +169,27 @@ class CustomDrawer extends StatelessWidget {
                 ),
               ),
               const Divider(),
+              const SizedBox(
+                height: 16,
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const AutoSizeTextPage();
+                  }));
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.monitor_heart_outlined),
+                      SizedBox(width: 8),
+                      Text("AutoSized Text"),
+                    ],
+                  ),
+                ),
+              ),
               Expanded(child: Container()),
               InkWell(
                 onTap: () {
