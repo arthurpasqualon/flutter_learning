@@ -1,3 +1,4 @@
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:learn_app/pages/characters_page.dart';
@@ -13,9 +14,15 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
-  PageController pageController = PageController();
-  int currentIndex = 0;
+class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
+  late TabController tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(initialIndex: 0, length: 4, vsync: this);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,13 +33,13 @@ class _MainPageState extends State<MainPage> {
       body: Column(
         children: [
           Expanded(
-            child: PageView(
-              controller: pageController,
-              onPageChanged: (index) {
-                setState(() {
-                  currentIndex = index;
-                });
-              },
+            child: TabBarView(
+              controller: tabController,
+              // onPageChanged: (index) {
+              //   setState(() {
+              //     currentIndex = index;
+              //   });
+              // },
               children: const [
                 CharactersPage(),
                 PostPage(),
@@ -41,24 +48,17 @@ class _MainPageState extends State<MainPage> {
               ],
             ),
           ),
-          BottomNavigationBar(
-              currentIndex: currentIndex,
-              type: BottomNavigationBarType.fixed,
-              onTap: (value) => setState(() => {
-                    currentIndex = value,
-                    pageController.animateToPage(value,
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeIn)
-                  }),
-              items: const [
-                BottomNavigationBarItem(
-                    icon: FaIcon(FontAwesomeIcons.mask), label: "Heroes"),
-                BottomNavigationBarItem(icon: Icon(Icons.list), label: "Posts"),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.person_outline), label: "Profile"),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.list_alt), label: "Tasks"),
-              ])
+          ConvexAppBar(
+            controller: tabController,
+            backgroundColor: Colors.black,
+            items: const [
+              TabItem(icon: Icons.shield, title: 'Heroes'),
+              TabItem(icon: Icons.newspaper, title: 'Posts'),
+              TabItem(icon: Icons.person, title: 'Profile'),
+              TabItem(icon: Icons.list_alt, title: 'Tasks'),
+            ],
+            onTap: (value) => tabController.index = value,
+          )
         ],
       ),
     );
