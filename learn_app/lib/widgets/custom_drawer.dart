@@ -3,8 +3,8 @@ import 'package:learn_app/pages/auto_size_text.dart';
 import 'package:learn_app/pages/imc_calc_page.dart';
 import 'package:learn_app/pages/login_page.dart';
 import 'package:learn_app/pages/profile.dart';
-import 'package:learn_app/pages/random_numbers.dart';
 import 'package:learn_app/pages/settings_page.dart';
+import 'package:learn_app/pages/test_http_page.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -132,28 +132,6 @@ class CustomDrawer extends StatelessWidget {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const RandomNumbers();
-                  }));
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: const Row(
-                    children: [
-                      Icon(Icons.numbers_outlined),
-                      SizedBox(width: 8),
-                      Text("Random Numbers"),
-                    ],
-                  ),
-                ),
-              ),
-              const Divider(),
-              const SizedBox(
-                height: 16,
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return const ImcCalcPage();
                   }));
                 },
@@ -183,9 +161,31 @@ class CustomDrawer extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: const Row(
                     children: [
-                      Icon(Icons.monitor_heart_outlined),
+                      Icon(Icons.text_decrease),
                       SizedBox(width: 8),
                       Text("AutoSized Text"),
+                    ],
+                  ),
+                ),
+              ),
+              const Divider(),
+              const SizedBox(
+                height: 16,
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const TestHttpPage();
+                  }));
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.pin_drop),
+                      SizedBox(width: 8),
+                      Text("Get CEP"),
                     ],
                   ),
                 ),
