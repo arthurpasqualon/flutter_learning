@@ -1,9 +1,8 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:learn_app/pages/characters_page.dart';
+import 'package:learn_app/pages/device_info_page.dart';
 import 'package:learn_app/pages/post_page.dart';
-import 'package:learn_app/pages/list_view_vertical.dart';
 import 'package:learn_app/pages/task_page.dart';
 import 'package:learn_app/widgets/custom_drawer.dart';
 
@@ -43,7 +42,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               children: const [
                 CharactersPage(),
                 PostPage(),
-                ListViewVertical(),
+                DeviceInfoPage(),
                 TaskPage()
               ],
             ),
@@ -54,7 +53,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             items: const [
               TabItem(icon: Icons.shield, title: 'Heroes'),
               TabItem(icon: Icons.newspaper, title: 'Posts'),
-              TabItem(icon: Icons.person, title: 'Profile'),
+              TabItem(icon: Icons.info, title: 'Device Info'),
               TabItem(icon: Icons.list_alt, title: 'Tasks'),
             ],
             onTap: (value) => tabController.index = value,
