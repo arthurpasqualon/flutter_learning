@@ -12,14 +12,14 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraPageState extends State<CameraPage> {
-  String? photoPath;
+  XFile? photo;
 
   Future<void> cropImage() async {
-    if (photoPath == null) {
+    if (photo?.path == null) {
       return;
     }
     CroppedFile? croppedFile = await ImageCropper().cropImage(
-      sourcePath: photoPath!,
+      sourcePath: photo!.path,
       aspectRatioPresets: [
         CropAspectRatioPreset.square,
         CropAspectRatioPreset.ratio3x2,
@@ -40,8 +40,11 @@ class _CameraPageState extends State<CameraPage> {
       ],
     );
 
+    if (croppedFile?.path == null) {
+      return;
+    }
     setState(() {
-      photoPath = croppedFile?.path;
+      photo = XFile(croppedFile!.path);
     });
   }
 
@@ -49,7 +52,7 @@ class _CameraPageState extends State<CameraPage> {
     final ImagePicker picker = ImagePicker();
     picker.pickImage(source: ImageSource.camera).then((XFile? value) {
       setState(() {
-        photoPath = value?.path;
+        photo = value;
       });
     });
   }
@@ -58,7 +61,7 @@ class _CameraPageState extends State<CameraPage> {
     final ImagePicker picker = ImagePicker();
     picker.pickImage(source: ImageSource.gallery).then((XFile? value) {
       setState(() {
-        photoPath = value?.path;
+        photo = value;
       });
     });
   }
@@ -80,10 +83,10 @@ class _CameraPageState extends State<CameraPage> {
           const Text("Camera Page"),
           SizedBox(
             height: 200,
-            child: photoPath == null
+            child: photo?.path == null
                 ? const Center(child: CircularProgressIndicator())
                 : Image.file(
-                    File(photoPath!),
+                    File(photo!.path),
                     fit: BoxFit.cover,
                   ),
           ),
