@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CameraPage extends StatefulWidget {
@@ -11,13 +12,44 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraPageState extends State<CameraPage> {
-  XFile? photo;
+  String? photoPath;
+
+  Future<void> cropImage() async {
+    if (photoPath == null) {
+      return;
+    }
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: photoPath!,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.ratio4x3,
+        CropAspectRatioPreset.ratio16x9
+      ],
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        IOSUiSettings(
+          title: 'Cropper',
+        ),
+      ],
+    );
+
+    setState(() {
+      photoPath = croppedFile?.path;
+    });
+  }
 
   Future<void> openCamera() async {
     final ImagePicker picker = ImagePicker();
     picker.pickImage(source: ImageSource.camera).then((XFile? value) {
       setState(() {
-        photo = value;
+        photoPath = value?.path;
       });
     });
   }
@@ -26,7 +58,7 @@ class _CameraPageState extends State<CameraPage> {
     final ImagePicker picker = ImagePicker();
     picker.pickImage(source: ImageSource.gallery).then((XFile? value) {
       setState(() {
-        photo = value;
+        photoPath = value?.path;
       });
     });
   }
@@ -48,10 +80,10 @@ class _CameraPageState extends State<CameraPage> {
           const Text("Camera Page"),
           SizedBox(
             height: 200,
-            child: photo == null
+            child: photoPath == null
                 ? const Center(child: CircularProgressIndicator())
                 : Image.file(
-                    File(photo!.path),
+                    File(photoPath!),
                     fit: BoxFit.cover,
                   ),
           ),
@@ -64,7 +96,12 @@ class _CameraPageState extends State<CameraPage> {
               onPressed: () {
                 openGallery();
               },
-              icon: const Icon(Icons.image_search))
+              icon: const Icon(Icons.image_search)),
+          IconButton(
+              onPressed: () {
+                cropImage();
+              },
+              icon: const Icon(Icons.crop)),
         ],
       ),
     );
