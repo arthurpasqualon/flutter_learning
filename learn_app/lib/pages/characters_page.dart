@@ -47,52 +47,54 @@ class _CharactersPageState extends State<CharactersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: characters == null
-          ? const SizedBox(
-              height: double.infinity,
-              width: double.infinity,
-              child: Center(child: LinearProgressIndicator()))
-          : Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                      itemCount: characters?.data?.results?.length ?? 0,
-                      controller: scrollController
-                        ..addListener(() {
-                          if (scrollController.position.pixels >
-                              scrollController.position.maxScrollExtent * 0.8) {
-                            loadCharacters();
-                          }
-                        }),
-                      itemBuilder: (context, index) {
-                        var character = characters?.data?.results?[index];
+      body: SafeArea(
+        child: characters == null
+            ? const SizedBox(
+                height: double.infinity,
+                width: double.infinity,
+                child: Center(child: LinearProgressIndicator()))
+            : Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: characters?.data?.results?.length ?? 0,
+                        controller: scrollController
+                          ..addListener(() {
+                            if (scrollController.position.pixels >
+                                scrollController.position.maxScrollExtent *
+                                    0.8) {
+                              loadCharacters();
+                            }
+                          }),
+                        itemBuilder: (context, index) {
+                          var character = characters?.data?.results?[index];
 
-                        if (character == null) {
-                          return null;
-                        }
-                        return ListTile(
-                          leading: character.thumbnail != null
-                              ? Image.network(
-                                  "${character.thumbnail?.path}.${character.thumbnail?.extension}",
-                                  height: 72,
-                                  width: 72,
-                                )
-                              : null,
-                          title: Text(character.name ?? ""),
-                          subtitle: Text(character.description ?? ""),
-                          trailing: const Icon(Icons.arrow_forward_ios),
-                        );
-                      }),
-                ),
-                if (loading)
-                  const SizedBox(
-                    height: 24,
-                    width: 24,
-                    child: Center(child: CircularProgressIndicator()),
-                  )
-              ],
-            ),
-    ));
+                          if (character == null) {
+                            return null;
+                          }
+                          return ListTile(
+                            leading: character.thumbnail != null
+                                ? Image.network(
+                                    "${character.thumbnail?.path}.${character.thumbnail?.extension}",
+                                    height: 72,
+                                    width: 72,
+                                  )
+                                : null,
+                            title: Text(character.name ?? ""),
+                            subtitle: Text(character.description ?? ""),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                          );
+                        }),
+                  ),
+                  if (loading)
+                    const SizedBox(
+                      height: 24,
+                      width: 24,
+                      child: Center(child: CircularProgressIndicator()),
+                    )
+                ],
+              ),
+      ),
+    );
   }
 }

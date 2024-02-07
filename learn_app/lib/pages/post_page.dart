@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learn_app/model/card_detail_model.dart';
 import 'package:learn_app/model/posts_model.dart';
+import 'package:learn_app/pages/camera_page.dart';
 import 'package:learn_app/pages/post_detail.dart';
 import 'package:learn_app/repositories/posts_repository.dart';
 
@@ -117,6 +118,19 @@ class _PostPageState extends State<PostPage> {
                     );
                   },
                 )),
+      floatingActionButton: FloatingActionButton(
+        shape: const CircleBorder(),
+        backgroundColor: Colors.black,
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return const CameraPage();
+          }));
+        },
+        child: const Icon(
+          Icons.camera_alt,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }
