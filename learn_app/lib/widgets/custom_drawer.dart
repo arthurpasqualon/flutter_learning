@@ -3,6 +3,7 @@ import 'package:learn_app/pages/auto_size_text.dart';
 import 'package:learn_app/pages/imc_calc_page.dart';
 import 'package:learn_app/pages/login_page.dart';
 import 'package:learn_app/pages/profile.dart';
+import 'package:learn_app/pages/counter_page_provider.dart';
 import 'package:learn_app/pages/settings_page.dart';
 import 'package:learn_app/pages/test_http_page.dart';
 
@@ -154,7 +155,7 @@ class CustomDrawer extends StatelessWidget {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const AutoSizeTextPage();
+                    return const CounterPageProvider();
                   }));
                 },
                 child: Container(
@@ -163,7 +164,7 @@ class CustomDrawer extends StatelessWidget {
                     children: [
                       Icon(Icons.text_decrease),
                       SizedBox(width: 8),
-                      Text("AutoSized Text"),
+                      Text("Numbers Provider"),
                     ],
                   ),
                 ),
