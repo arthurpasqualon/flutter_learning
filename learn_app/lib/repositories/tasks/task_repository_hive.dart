@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:learn_app/model/task_model.dart';
 
-class TaskRepository {
+class TaskRepositoryHive {
   final List<TaskModel> _tasks = [];
   static late Box _box;
 
@@ -10,15 +10,15 @@ class TaskRepository {
 
   List<TaskModel> get tasks => _tasks;
 
-  TaskRepository._create();
+  TaskRepositoryHive._create();
 
-  static Future<TaskRepository> load() async {
+  static Future<TaskRepositoryHive> load() async {
     if (Hive.isBoxOpen(TASK_KEY)) {
       _box = Hive.box(TASK_KEY);
     } else {
       _box = await Hive.openBox(TASK_KEY);
     }
-    return TaskRepository._create();
+    return TaskRepositoryHive._create();
   }
 
   List<TaskModel> fetchTasks(bool showOnlyPendingTasks) {
