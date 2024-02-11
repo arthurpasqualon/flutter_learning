@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "785144162989",
+    "project_id": "flutter-learn-app-9168c",
+    "storage_bucket": "flutter-learn-app-9168c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:785144162989:android:1728d280cef5c2da19b424",
+        "android_client_info": {
+          "package_name": "com.arthurpasqualon.learnapp.learn_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkWiB27zrqsXuMLO0poxSt4DASu-O3I6A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

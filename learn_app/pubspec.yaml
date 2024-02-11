@@ -66,6 +66,7 @@ dependencies:
   flutter_mobx: ^2.2.0+2
   get: ^4.6.6
   get_it: ^7.6.7
+  firebase_core: ^2.25.4
 
 flutter_launcher_icons:
   android: "launcher_icon"

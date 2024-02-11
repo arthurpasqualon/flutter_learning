@@ -11,6 +11,8 @@ import 'package:learn_app/store/counter_mobx_store.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 final getIt = GetIt.instance;
 
@@ -26,6 +28,10 @@ void setupGetIt() {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   setupGetIt();
   var docsDir = await path_provider.getApplicationDocumentsDirectory();
