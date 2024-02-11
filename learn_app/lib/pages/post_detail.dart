@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learn_app/main.dart';
 import 'package:learn_app/model/card_detail_model.dart';
 import 'package:learn_app/model/post_comment_model.dart';
 import 'package:learn_app/repositories/post_comments_repository.dart';
@@ -14,7 +15,7 @@ class PostDetail extends StatefulWidget {
 
 class _PostDetailState extends State<PostDetail> {
   List<PostCommentModel> comments = [];
-  var postCommentRepository = PostCommentsRepository();
+  var postCommentRepository = getIt<PostCommentsRepository>();
 
   @override
   void initState() {

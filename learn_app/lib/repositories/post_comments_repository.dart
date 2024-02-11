@@ -2,8 +2,9 @@ import 'package:learn_app/model/post_comment_model.dart';
 import 'package:learn_app/repositories/jsonplaceholder_dio.dart';
 
 class PostCommentsRepository {
-  final dio = JsonPlaceholderDio();
+  final JsonPlaceholderDio dio;
 
+  PostCommentsRepository(this.dio);
   Future<List<PostCommentModel>> getPostComments(int postId) async {
     var response = await dio.jsonPlaceholderDio.get('/posts/$postId/comments');
 

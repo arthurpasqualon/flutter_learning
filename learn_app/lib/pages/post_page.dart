@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learn_app/main.dart';
 import 'package:learn_app/model/card_detail_model.dart';
 import 'package:learn_app/model/posts_model.dart';
 import 'package:learn_app/pages/camera_page.dart';
@@ -15,7 +16,7 @@ class PostPage extends StatefulWidget {
 }
 
 class _PostPageState extends State<PostPage> {
-  var postsRepository = PostsRepository();
+  var postsRepository = getIt<PostsRepository>();
   var posts = <PostsModel>[];
 
   @override

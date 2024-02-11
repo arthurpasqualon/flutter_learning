@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:learn_app/main.dart';
 import 'package:learn_app/store/counter_mobx_store.dart';
 
 class CounterPageMobx extends StatelessWidget {
-  final CounterMobxStore counterService = CounterMobxStore();
+  final CounterMobxStore counterService = getIt<CounterMobxStore>();
 
   CounterPageMobx({super.key});
 

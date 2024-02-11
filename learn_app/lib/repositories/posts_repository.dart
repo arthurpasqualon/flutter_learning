@@ -2,7 +2,10 @@ import 'package:learn_app/model/posts_model.dart';
 import 'package:learn_app/repositories/jsonplaceholder_dio.dart';
 
 class PostsRepository {
-  final dio = JsonPlaceholderDio();
+  final JsonPlaceholderDio dio;
+
+  PostsRepository(this.dio);
+
   Future<List<PostsModel>> fetchPosts() async {
     var response = await dio.jsonPlaceholderDio.get('/posts');
 

@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:learn_app/repositories/tasks/tasks_repository_dio_interceptor.dart';
 
 class TasksRepositoryDio {
