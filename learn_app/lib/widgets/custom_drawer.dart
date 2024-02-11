@@ -4,6 +4,7 @@ import 'package:learn_app/pages/imc_calc/imc_calc_page.dart';
 import 'package:learn_app/pages/login_page/login_page.dart';
 import 'package:learn_app/pages/profile/profile_page.dart';
 import 'package:learn_app/pages/setttings/settings_page.dart';
+import 'package:learn_app/pages/task/task_firebase_page.dart';
 import 'package:learn_app/pages/zip_code/zip_code_page.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -68,14 +69,17 @@ class CustomDrawer extends StatelessWidget {
               InkWell(
                 onTap: () {
                   Navigator.pop(context);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return TaskFirebasePage();
+                  }));
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: const Row(
                     children: [
-                      Icon(Icons.home_outlined),
+                      Icon(Icons.task_outlined),
                       SizedBox(width: 8),
-                      Text("Home"),
+                      Text("Tasks Firebase"),
                     ],
                   ),
                 ),
