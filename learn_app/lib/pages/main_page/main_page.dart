@@ -1,10 +1,10 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:learn_app/pages/characters_page.dart';
-import 'package:learn_app/pages/device_info_page.dart';
-import 'package:learn_app/pages/post_page.dart';
-import 'package:learn_app/pages/task_getx_page.dart';
-import 'package:learn_app/pages/task_page.dart';
+import 'package:learn_app/pages/characters/characters_page.dart';
+import 'package:learn_app/pages/device_info/device_info_page.dart';
+import 'package:learn_app/pages/post/post_page.dart';
+import 'package:learn_app/pages/task/task_getx_page.dart';
+import 'package:learn_app/pages/task/task_page.dart';
 import 'package:learn_app/widgets/custom_drawer.dart';
 
 class MainPage extends StatefulWidget {

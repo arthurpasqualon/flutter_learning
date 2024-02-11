@@ -3,14 +3,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
-class RandomNumbers extends StatefulWidget {
-  const RandomNumbers({super.key});
+class RandomNumbersPage extends StatefulWidget {
+  const RandomNumbersPage({super.key});
 
   @override
-  State<RandomNumbers> createState() => _RandomNumbersState();
+  State<RandomNumbersPage> createState() => _RandomNumbersPageState();
 }
 
-class _RandomNumbersState extends State<RandomNumbers> {
+class _RandomNumbersPageState extends State<RandomNumbersPage> {
   late Box boxRandomNumbers;
 
   int randomNumber = 0;

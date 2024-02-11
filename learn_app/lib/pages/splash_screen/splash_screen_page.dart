@@ -1,15 +1,15 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:learn_app/pages/login_page.dart';
+import 'package:learn_app/pages/login_page/login_page.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class SplashScreenPage extends StatefulWidget {
+  const SplashScreenPage({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<SplashScreenPage> createState() => _SplashScreenPageState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenPageState extends State<SplashScreenPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

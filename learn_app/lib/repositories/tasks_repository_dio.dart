@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:learn_app/repositories/tasks/tasks_repository_dio_interceptor.dart';
+import 'package:learn_app/repositories/tasks_repository_dio_interceptor.dart';
 
 class TasksRepositoryDio {
   final _dio = Dio();

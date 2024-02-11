@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:learn_app/services/counter_service.dart';
 import 'package:provider/provider.dart';
 
-class CounterPageProvider extends StatefulWidget {
-  const CounterPageProvider({super.key});
+class CounterProviderPage extends StatefulWidget {
+  const CounterProviderPage({super.key});
 
   @override
-  State<CounterPageProvider> createState() => _CounterPageProviderState();
+  State<CounterProviderPage> createState() => _CounterProviderPageState();
 }
 
-class _CounterPageProviderState extends State<CounterPageProvider> {
+class _CounterProviderPageState extends State<CounterProviderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

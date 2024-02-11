@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:learn_app/shared/app_images.dart';
 
-class ListViewHorizontal extends StatelessWidget {
-  const ListViewHorizontal({super.key});
+class ListViewHorizontalPage extends StatelessWidget {
+  const ListViewHorizontalPage({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learn_app/model/tasks_model.dart';
-import 'package:learn_app/repositories/tasks/tasks_repository.dart';
+import 'package:learn_app/repositories/tasks_repository.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class TaskPage extends StatefulWidget {

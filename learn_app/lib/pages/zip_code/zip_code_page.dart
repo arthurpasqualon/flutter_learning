@@ -4,14 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:learn_app/model/via_cep_model.dart';
 import 'package:learn_app/repositories/via_cep_repository.dart';
 
-class TestHttpPage extends StatefulWidget {
-  const TestHttpPage({Key? key}) : super(key: key);
+class ZipCodePage extends StatefulWidget {
+  const ZipCodePage({Key? key}) : super(key: key);
 
   @override
-  State<TestHttpPage> createState() => _TestHttpPageState();
+  State<ZipCodePage> createState() => _ZipCodePageState();
 }
 
-class _TestHttpPageState extends State<TestHttpPage> {
+class _ZipCodePageState extends State<ZipCodePage> {
   TextEditingController zipCodeController = TextEditingController();
   ViaCepModel viaCepModel = ViaCepModel();
   bool isLoading = false;

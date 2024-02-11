@@ -5,14 +5,14 @@ import 'package:learn_app/repositories/level_repository.dart';
 import 'package:learn_app/repositories/profile_repository.dart';
 import 'package:learn_app/widgets/section_divider.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({super.key});
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfilePageState extends State<ProfilePage> {
   late ProfileRepository profileRepository;
   ProfileModel profile = ProfileModel.empty();
   TextEditingController emailController = TextEditingController(text: "");

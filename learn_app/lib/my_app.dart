@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:learn_app/pages/splash_screen.dart';
+import 'package:learn_app/pages/splash_screen/splash_screen_page.dart';
 import 'package:learn_app/services/counter_service.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.grey,
             textTheme: GoogleFonts.ptSansTextTheme(),
           ),
-          home: const SplashScreen()),
+          home: const SplashScreenPage()),
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:learn_app/model/tasks_model.dart';
-import 'package:learn_app/repositories/tasks/tasks_repository_dio.dart';
+import 'package:learn_app/repositories/tasks_repository_dio.dart';
 
 class TasksRepository {
   final _dio = TasksRepositoryDio().dio;

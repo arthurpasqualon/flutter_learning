@@ -13,17 +13,21 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env");
 
+void setupGetIt() {
   getIt.registerSingleton<CounterMobxStore>(CounterMobxStore());
   getIt.registerSingleton<JsonPlaceholderDio>(JsonPlaceholderDio());
   getIt.registerSingleton<PostsRepository>(
       PostsRepository(getIt<JsonPlaceholderDio>()));
   getIt.registerSingleton<PostCommentsRepository>(
       PostCommentsRepository(getIt<JsonPlaceholderDio>()));
+}
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+
+  setupGetIt();
   var docsDir = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(docsDir.path);
   Hive.registerAdapter(ProfileModelAdapter());

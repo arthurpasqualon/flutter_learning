@@ -4,16 +4,16 @@ import 'package:learn_app/model/card_detail_model.dart';
 import 'package:learn_app/model/post_comment_model.dart';
 import 'package:learn_app/repositories/post_comments_repository.dart';
 
-class PostDetail extends StatefulWidget {
+class PostDetailPage extends StatefulWidget {
   final CardDetailModel cardDetail;
 
-  const PostDetail({super.key, required this.cardDetail});
+  const PostDetailPage({super.key, required this.cardDetail});
 
   @override
-  State<PostDetail> createState() => _PostDetailState();
+  State<PostDetailPage> createState() => _PostDetailPageState();
 }
 
-class _PostDetailState extends State<PostDetail> {
+class _PostDetailPageState extends State<PostDetailPage> {
   List<PostCommentModel> comments = [];
   var postCommentRepository = getIt<PostCommentsRepository>();
 

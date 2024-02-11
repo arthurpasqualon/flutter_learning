@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:learn_app/main.dart';
 import 'package:learn_app/model/card_detail_model.dart';
 import 'package:learn_app/model/posts_model.dart';
-import 'package:learn_app/pages/camera_page.dart';
-import 'package:learn_app/pages/post_detail.dart';
+import 'package:learn_app/pages/camera/camera_page.dart';
+import 'package:learn_app/pages/post_detail/post_detail_page.dart';
 import 'package:learn_app/repositories/posts_repository.dart';
 
 var IMAGE_FAKE = "https://picsum.photos/200/300";
@@ -48,7 +48,7 @@ class _PostPageState extends State<PostPage> {
                         onTap: () {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                            return PostDetail(
+                            return PostDetailPage(
                                 cardDetail: CardDetailModel(
                               post.id,
                               post.title,

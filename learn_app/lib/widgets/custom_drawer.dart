@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:learn_app/pages/auto_size_text.dart';
-import 'package:learn_app/pages/counter_page_mobx.dart';
-import 'package:learn_app/pages/imc_calc_page.dart';
-import 'package:learn_app/pages/login_page.dart';
-import 'package:learn_app/pages/profile.dart';
-import 'package:learn_app/pages/counter_page_provider.dart';
-import 'package:learn_app/pages/settings_page.dart';
-import 'package:learn_app/pages/test_http_page.dart';
+import 'package:learn_app/pages/counter/counter_page_mobx.dart';
+import 'package:learn_app/pages/imc_calc/imc_calc_page.dart';
+import 'package:learn_app/pages/login_page/login_page.dart';
+import 'package:learn_app/pages/profile/profile_page.dart';
+import 'package:learn_app/pages/setttings/settings_page.dart';
+import 'package:learn_app/pages/zip_code/zip_code_page.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -90,7 +88,7 @@ class CustomDrawer extends StatelessWidget {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const Profile();
+                    return const ProfilePage();
                   }));
                 },
                 child: Container(
@@ -178,7 +176,7 @@ class CustomDrawer extends StatelessWidget {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const TestHttpPage();
+                    return const ZipCodePage();
                   }));
                 },
                 child: Container(
