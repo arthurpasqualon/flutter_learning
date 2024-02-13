@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learn_app/model/characters_model.dart';
+import 'package:learn_app/pages/chat/chat_init_page.dart';
 import 'package:learn_app/repositories/characters_repository.dart';
 
 class CharactersPage extends StatefulWidget {
@@ -47,6 +48,14 @@ class _CharactersPageState extends State<CharactersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return const ChatInitPage();
+          }));
+        },
+        child: const Icon(Icons.chat_bubble),
+      ),
       body: SafeArea(
         child: characters == null
             ? const SizedBox(
