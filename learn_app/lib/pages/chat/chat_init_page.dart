@@ -1,3 +1,5 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_app/pages/chat/chat_page.dart';
 
@@ -6,7 +8,16 @@ class ChatInitPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final remoteConfig = FirebaseRemoteConfig.instance;
+    FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+    final hintText = remoteConfig.getString('chat_screen_title');
     TextEditingController nickNameController = TextEditingController();
+
+    void sendAnalyticsEvent() async {
+      await analytics.logEvent(name: 'chat_init_page_view');
+    }
+
+    sendAnalyticsEvent();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Start Chat'),
@@ -19,8 +30,8 @@ class ChatInitPage extends StatelessWidget {
             children: [
               TextField(
                 controller: nickNameController,
-                decoration: const InputDecoration(
-                  hintText: 'Enter your nickname',
+                decoration: InputDecoration(
+                  hintText: hintText,
                 ),
               ),
               const SizedBox(

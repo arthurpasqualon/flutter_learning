@@ -1,3 +1,6 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:learn_app/model/imc_result_model.dart';
@@ -15,6 +18,21 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 final getIt = GetIt.instance;
+final remoteConfig = FirebaseRemoteConfig.instance;
+
+void setupMessaging() async {
+  final messaging = FirebaseMessaging.instance;
+  final fcmToken = await messaging.getToken();
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    badge: true,
+    provisional: false,
+    sound: true,
+  );
+
+  debugPrint('FCM Token: ${fcmToken ?? 'UNAVAILABLE'}');
+  debugPrint('User granted permission: ${settings.authorizationStatus}');
+}
 
 void setupGetIt() {
   getIt.registerSingleton<CounterMobxStore>(CounterMobxStore());
@@ -25,6 +43,17 @@ void setupGetIt() {
       PostCommentsRepository(getIt<JsonPlaceholderDio>()));
 }
 
+void setupRemoteConfig() async {
+  await remoteConfig.setConfigSettings(RemoteConfigSettings(
+    fetchTimeout: const Duration(minutes: 1),
+    minimumFetchInterval: const Duration(hours: 1),
+  ));
+  await remoteConfig.setDefaults(const {
+    "chat_screen_title": "Nickname",
+  });
+  await remoteConfig.fetchAndActivate();
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
@@ -32,7 +61,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
+  setupMessaging();
+  setupRemoteConfig();
   setupGetIt();
   var docsDir = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(docsDir.path);
